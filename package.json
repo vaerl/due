@@ -10,14 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:due.Scan"
+		"onCommand:due.scan"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "due.helloWorld",
-				"title": "Hello World"
+				"command": "due.scan",
+				"title": "Scan Workspace"
 			}
 		]
 	},
