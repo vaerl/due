@@ -5,7 +5,7 @@ This is the README for your extension "due". After writing up a brief descriptio
 ## TODO
 
 - [ ] find all occurrences of @xx.xx.xxxx-xx:xx
-  - [ ] create model
+  - [x] create basic model
   - [ ] create service
     - [ ] find all workspace-files -> [example](https://github.com/ExodiusStudios/vscode-comment-anchors/blob/099ea64289774f1affcfd384b0ca68c3094c9b6a/src/anchorEngine.ts#L746)
     - [ ] add to map if file -> [example](https://github.com/ExodiusStudios/vscode-comment-anchors/blob/099ea64289774f1affcfd384b0ca68c3094c9b6a/src/anchorEngine.ts#L1188)
@@ -13,9 +13,11 @@ This is the README for your extension "due". After writing up a brief descriptio
     - [ ] convert matched strings to actual dates
     - [ ] color matched strings based on difference between now and given date(today, tomorrow, this week, last week)
   - [ ] ignore bad syntax/maybe collect them for later
+  - [ ] use on-save-hook to update for the current file
 - [ ] color the dates depending on their due-date
 - [ ] show all occurrences in a sidebar-tab
   - [ ] sort them by today, tomorrow this week and later
+  - [ ] offer context-actions(complete, move to, etc.)
 - [ ] make all of the above options configurable
 
 ## Features
