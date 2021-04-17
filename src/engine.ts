@@ -4,10 +4,9 @@ import { DueDate } from "./dueDate";
 
 export class Engine {
 	public dueDates: DueDate[] = new Array();
-	public matcher = new RegExp(
-		"@\\d\\d\\.\\d\\d\\.\\d\\d\\d\\d(-\\d\\d:\\d\\d)?",
-		"gm"
-	);
+
+	// match 11.11.1111 and 11.11.1111-11:11
+	public exp = "@\\d\\d\\.\\d\\d\\.\\d\\d\\d\\d(-\\d\\d:\\d\\d)?";
 
 	constructor() {}
 
