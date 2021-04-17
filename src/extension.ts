@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerCommand("due.scan", () => {
 		let engine = new Engine();
-		engine.initiateScan();
+		engine.scanWorkspace();
 	});
 
 	context.subscriptions.push(disposable);

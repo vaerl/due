@@ -12,6 +12,7 @@ export class Engine {
 	constructor() {}
 
 	initiateScan() {
+	scanWorkspace() {
 		console.debug("Scanning the workspace for matches.");
 		workspace.findFiles("*").then((files) => {
 			console.debug("Found files in workspace: ", files);
