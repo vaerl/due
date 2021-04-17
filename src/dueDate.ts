@@ -1,7 +1,8 @@
-import { Uri } from "vscode";
+import { Range, Uri } from "vscode";
 
 export class DueDate {
 	public date: Date;
+	private day = 86400000;
 
 	constructor(
 		public readonly uri: Uri,
