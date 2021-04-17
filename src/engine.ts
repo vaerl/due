@@ -1,4 +1,4 @@
-import { workspace } from "vscode";
+import { Position, Range, TextEditor, Uri, window, workspace } from "vscode";
 import * as fs from "fs";
 import { DueDate } from "./dueDate";
 
