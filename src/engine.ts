@@ -97,6 +97,12 @@ export class Engine {
 		)[0];
 	}
 
+	getOpenEditorFor(file: Uri): TextEditor {
+		return window.visibleTextEditors.filter(
+			(editor) => file.path === editor.document.uri.path
+		)[0];
+	}
+
 	decorate() {
 		const editor = this.getOpenEditor();
 		console.log("Decorating editor:", editor);
