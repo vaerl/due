@@ -87,28 +87,21 @@ export class DueDate {
 	}
 
 	getDecoration() {
-		let color: string;
-
 		switch (this.dueAt()) {
 			case DueStatus.expired:
-				color = "red";
-				break;
+				return DueDate.expiredDecoration;
 			case DueStatus.today:
-				color = "orange";
-				break;
+				return DueDate.todayDecoration;
 			case DueStatus.tomorrow:
-				color = "yellow";
-				break;
+				return DueDate.tomorrowDecoration;
 			case DueStatus.thisWeek:
-				color = "blue";
-				break;
+				return DueDate.thisWeekDecoration;
 			case DueStatus.later:
-				color = "purple";
-				break;
+				return DueDate.laterDecoration;
 			default:
-				color = "grey";
-				break;
+				return DueDate.laterDecoration;
 		}
+	}
 
 		return window.createTextEditorDecorationType({
 			color: color,
