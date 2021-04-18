@@ -85,6 +85,12 @@ export class Engine {
 		}
 	}
 
+	getOpenEditor(): TextEditor {
+		return window.visibleTextEditors.filter((editor) =>
+			this.dueDates.map((d) => d.uri.path).includes(editor.document.uri.path)
+		)[0];
+	}
+
 	decorate() {
 		// TODO move to method in DueDate
 		const decoration = window.createTextEditorDecorationType({
