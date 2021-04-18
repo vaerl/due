@@ -7,13 +7,20 @@ import { Engine } from "./engine";
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	console.debug("Starting due.");
+	let engine = new Engine();
 
-	let disposable = vscode.commands.registerCommand("due.scan", () => {
-		let engine = new Engine();
-		engine.scanWorkspace();
+	let scanWorkspace = vscode.commands.registerCommand(
+		"due.scanWorkSpace",
+		() => {
+			engine.scanWorkspace();
+		}
+	);
+	context.subscriptions.push(scanWorkspace);
+
+	let scanFile = vscode.commands.registerCommand("due.scanFile", () => {
+		engine.scanFile(engine.getOpenEditor().document.uri);
 	});
-
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(scanFile);
 }
 
 // this method is called when your extension is deactivated
