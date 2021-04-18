@@ -107,4 +107,13 @@ export class Engine {
 			}
 		});
 	}
+
+	discardDates(file: Uri) {
+		for (let index = 0; index < this.dueDates.length; index++) {
+			const date = this.dueDates[index];
+			if (date.uri.path === file.path) {
+				this.dueDates.splice(index, 1);
+			}
+		}
+	}
 }
