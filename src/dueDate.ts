@@ -103,10 +103,12 @@ export class DueDate {
 		}
 	}
 
-		return window.createTextEditorDecorationType({
-			color: color,
-			fontWeight: "bold",
-		});
+	static removeDecorationFor(editor: TextEditor) {
+		editor.setDecorations(DueDate.expiredDecoration, []);
+		editor.setDecorations(DueDate.todayDecoration, []);
+		editor.setDecorations(DueDate.tomorrowDecoration, []);
+		editor.setDecorations(DueDate.thisWeekDecoration, []);
+		editor.setDecorations(DueDate.laterDecoration, []);
 	}
 }
 
