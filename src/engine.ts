@@ -100,6 +100,7 @@ export class Engine {
 	decorate() {
 		const editor = this.getOpenEditor();
 		console.log("Decorating editor:", editor);
+		DueDate.removeDecorationFor(editor);
 
 		this.dueDates.forEach((date) => {
 			if (date.uri.path === editor.document.uri.path) {
