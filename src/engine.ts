@@ -12,6 +12,7 @@ export class Engine {
 
 	scanWorkspace() {
 		console.debug("Scanning the workspace for matches.");
+		this.dueDates = [];
 		workspace.findFiles("*").then((files) => {
 			console.debug("Found files in workspace: ", files);
 			files.forEach(async (file) => {
