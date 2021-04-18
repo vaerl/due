@@ -17,35 +17,40 @@ export class Engine {
 			files.forEach(async (file) => {
 				// TODO extract this to scanFile
 				// TODO hook into onSave -> call scanFile
-				if (file.scheme === "file") {
-					let text = await this.getFileText(file);
-
-					// match all instances in the extracted text
-					const textArray = text.split("\n");
-					console.debug("text-array: ", textArray);
-					for (let line = 0; line < textArray.length; line++) {
-						let match = textArray[line].match(this.exp);
-
-						if (match !== null && match.index !== undefined) {
-							console.debug("Matched line: ", match.toString());
-							let range = new Range(
-								new Position(line, match.index),
-								new Position(line, match.index + match[0].length)
-							);
-
-							// TODO get todo/text before @
-							let date = new DueDate(file, match.toString(), range);
-							this.dueDates.push(date);
-						}
-					}
-
-					console.debug("Done scanning with: ", this.dueDates);
-					this.decorate();
-				} else {
-					console.debug("URI is not a file, ignoring.");
-				}
+				await this.scanFile(file);
 			});
+			console.debug("Scanned all files.");
 		});
+	}
+
+	async scanFile(file: Uri) {
+		if (file.scheme === "file") {
+			let text = await this.getFileText(file);
+
+			// match all instances in the extracted text
+			const textArray = text.split("\n");
+			console.debug("text-array: ", textArray);
+			for (let line = 0; line < textArray.length; line++) {
+				let match = textArray[line].match(this.exp);
+
+				if (match !== null && match.index !== undefined) {
+					console.debug("Matched line: ", match.toString());
+					let range = new Range(
+						new Position(line, match.index),
+						new Position(line, match.index + match[0].length)
+					);
+
+					// TODO get todo/text before @
+					let date = new DueDate(file, match.toString(), range);
+					this.dueDates.push(date);
+				}
+			}
+
+			console.debug("Done scanning with: ", this.dueDates);
+			this.decorate();
+		} else {
+			console.debug("URI is not a file, ignoring.");
+		}
 	}
 
 	/**
