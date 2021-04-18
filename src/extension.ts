@@ -8,8 +8,8 @@ import { Engine } from "./engine";
 export function activate(context: vscode.ExtensionContext) {
 	console.debug("Starting due.");
 	let engine = new Engine();
-	// TODO this does not work
-	engine.scanWorkspace();
+	// TODO this does not work - this is the wrong place to do this, see comment above
+	// engine.scanWorkspace();
 
 	let scanWorkspace = vscode.commands.registerCommand(
 		"due.scanWorkspace",
