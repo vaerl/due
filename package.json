@@ -10,14 +10,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:due.scan"
+		"onCommand:due.scanWorkspace",
+		"onCommand:due.scanFile"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "due.scan",
-				"title": "Scan Workspace"
+				"command": "due.scanWorkspace",
+				"title": "Due: Scan workspace"
+			},
+			{
+				"command": "due.scanFile",
+				"title": "Due: Scan current file"
 			}
 		]
 	},
