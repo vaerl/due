@@ -1,9 +1,38 @@
-import { Range, Uri, window } from "vscode";
+import { Range, TextEditor, Uri, window } from "vscode";
 
 export class DueDate {
 	public date: Date;
 	private day = 86400000;
 
+	private static expiredDecoration = window.createTextEditorDecorationType({
+		color: "red",
+		fontWeight: "bold",
+	});
+
+	private static todayDecoration = window.createTextEditorDecorationType({
+		color: "orange",
+		fontWeight: "bold",
+	});
+
+	private static tomorrowDecoration = window.createTextEditorDecorationType({
+		color: "purple",
+		fontWeight: "bold",
+	});
+
+	private static thisWeekDecoration = window.createTextEditorDecorationType({
+		color: "blue",
+		fontWeight: "bold",
+	});
+
+	private static doneDecoration = window.createTextEditorDecorationType({
+		color: "green",
+		fontWeight: "bold",
+	});
+
+	private static laterDecoration = window.createTextEditorDecorationType({
+		color: "grey",
+		fontWeight: "bold",
+	});
 	constructor(
 		public readonly uri: Uri,
 		dateMatch: string,
