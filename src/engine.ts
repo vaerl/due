@@ -24,10 +24,12 @@ export class Engine {
 	}
 
 	async scanFile(file: Uri) {
-		// TODO this needs some logic to replace or remove existing dueDates, maybe discard all for file?
-		// TODO there is some error here when calling it separately for the first time
+		// TODO there is some error here when calling it separately for the first time, probably because scanWorkspace sets everything up
 		if (file.scheme === "file") {
 			let text = await this.getFileText(file);
+
+			// discard all dates in the current file
+			this.discardDates(file);
 
 			// match all instances in the extracted text
 			const textArray = text.split("\n");
