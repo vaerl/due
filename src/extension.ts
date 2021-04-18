@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let engine = new Engine();
 
 	let scanWorkspace = vscode.commands.registerCommand(
-		"due.scanWorkSpace",
+		"due.scanWorkspace",
 		() => {
 			engine.scanWorkspace();
 		}
