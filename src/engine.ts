@@ -15,7 +15,6 @@ export class Engine {
 		workspace.findFiles("*").then((files) => {
 			console.debug("Found files in workspace: ", files);
 			files.forEach(async (file) => {
-				// TODO hook into onSave -> call scanFile
 				await this.scanFile(file);
 			});
 			// TODO make the above part complete synchronously
@@ -98,19 +97,13 @@ export class Engine {
 	}
 
 	decorate() {
-		// TODO move to method in DueDate
-		const decoration = window.createTextEditorDecorationType({
-			backgroundColor: "green",
-			border: "2px solid white",
-		});
-
 		const editor = this.getOpenEditor();
-
 		console.log("Decorating editor:", editor);
-		// TODO do this for every dueDate in the current editor, call getDecoration
-		editor.setDecorations(
-			decoration,
-			this.dueDates.map((d) => d.range)
-		);
+
+		this.dueDates.forEach((date) => {
+			if (date.uri.path === editor.document.uri.path) {
+				editor.setDecorations(date.getDecoration(), [date.range]);
+			}
+		});
 	}
 }
