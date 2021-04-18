@@ -23,6 +23,11 @@ export function activate(context: vscode.ExtensionContext) {
 		engine.scanFile(engine.getOpenEditor().document.uri);
 	});
 	context.subscriptions.push(scanFile);
+
+	// hook into onWillSave to update the document after it has been edited
+	vscode.workspace.onWillSaveTextDocument((_event) => {
+		engine.scanFile(engine.getOpenEditor().document.uri);
+	});
 }
 
 // this method is called when your extension is deactivated
