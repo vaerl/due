@@ -10,8 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:due.scanWorkspace",
-		"onCommand:due.scanFile"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
