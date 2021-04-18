@@ -1,4 +1,4 @@
-import { Range, Uri } from "vscode";
+import { Range, Uri, window } from "vscode";
 
 export class DueDate {
 	public date: Date;
@@ -9,7 +9,31 @@ export class DueDate {
 		dateMatch: string,
 		public readonly range: Range
 	) {
-		this.date = new Date(dateMatch.substring(1));
+		// remove @
+		dateMatch = dateMatch.substring(1);
+
+		let date = dateMatch.split("-")[0];
+		let time = dateMatch.split("-")[1];
+
+		let dateValues = date.split(".");
+
+		if (time) {
+			let timeValues = time.split(":");
+
+			this.date = new Date(
+				Number.parseInt(dateValues[2]),
+				Number.parseInt(dateValues[1]) - 1,
+				Number.parseInt(dateValues[0]),
+				Number.parseInt(timeValues[0]),
+				Number.parseInt(timeValues[1])
+			);
+		} else {
+			this.date = new Date(
+				Number.parseInt(dateValues[2]),
+				Number.parseInt(dateValues[1]) - 1,
+				Number.parseInt(dateValues[0])
+			);
+		}
 	}
 
 	dueAt(): DueStatus {
