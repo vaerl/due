@@ -37,9 +37,16 @@ export class DueDate {
 	}
 
 	dueAt(): DueStatus {
-		let difference = Date.now().valueOf() - this.date.valueOf();
+		// TODO discard hour if not specified - this might need two kinds of Dates?
+		let difference = this.date.valueOf() - Date.now().valueOf();
+		console.debug("this: ", this);
+		console.debug("date: ", this.date.valueOf());
+		console.debug("now: ", Date.now().valueOf());
+		console.debug("Difference: ", difference);
 
-		if (difference < this.day) {
+		if (difference < 0) {
+			return DueStatus.expired;
+		} else if (difference < this.day) {
 			return DueStatus.today;
 		} else if (difference < this.day * 2) {
 			return DueStatus.tomorrow;
@@ -52,6 +59,7 @@ export class DueDate {
 }
 
 export enum DueStatus {
+	expired,
 	today,
 	tomorrow,
 	thisWeek,
