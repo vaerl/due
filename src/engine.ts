@@ -98,9 +98,7 @@ export class Engine {
 			border: "2px solid white",
 		});
 
-		const editor = window.visibleTextEditors.filter((editor) =>
-			this.dueDates.map((d) => d.uri.path).includes(editor.document.uri.path)
-		)[0];
+		const editor = this.getOpenEditor();
 
 		console.log("Decorating editor:", editor);
 		// TODO do this for every dueDate in the current editor, call getDecoration
