@@ -56,6 +56,36 @@ export class DueDate {
 			return DueStatus.later;
 		}
 	}
+
+	getDecoration() {
+		let color: string;
+
+		switch (this.dueAt()) {
+			case DueStatus.expired:
+				color = "red";
+				break;
+			case DueStatus.today:
+				color = "orange";
+				break;
+			case DueStatus.tomorrow:
+				color = "yellow";
+				break;
+			case DueStatus.thisWeek:
+				color = "blue";
+				break;
+			case DueStatus.later:
+				color = "purple";
+				break;
+			default:
+				color = "grey";
+				break;
+		}
+
+		return window.createTextEditorDecorationType({
+			color: color,
+			fontWeight: "bold",
+		});
+	}
 }
 
 export enum DueStatus {
