@@ -15,15 +15,17 @@ export class Engine {
 		workspace.findFiles("*").then((files) => {
 			console.debug("Found files in workspace: ", files);
 			files.forEach(async (file) => {
-				// TODO extract this to scanFile
 				// TODO hook into onSave -> call scanFile
 				await this.scanFile(file);
 			});
+			// TODO make the above part complete synchronously
 			console.debug("Scanned all files.");
 		});
 	}
 
 	async scanFile(file: Uri) {
+		// TODO this needs some logic to replace or remove existing dueDates, maybe discard all for file?
+		// TODO there is some error here when calling it separately for the first time
 		if (file.scheme === "file") {
 			let text = await this.getFileText(file);
 
@@ -77,7 +79,6 @@ export class Engine {
 			return new Promise<string>((success, reject) => {
 				fs.readFile(file.path, "utf8", (err, data) => {
 					if (data) {
-						console.debug("Found text: ", data);
 						success(data);
 					} else {
 						console.error("Could not read the file: ", err);
