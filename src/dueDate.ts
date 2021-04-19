@@ -2,6 +2,7 @@ import { Range, TextEditor, Uri, window } from "vscode";
 
 export class DueDate {
 	public date: Date;
+	public hasTime: boolean = false;
 	private day = 86400000;
 
 	private static expiredDecoration = window.createTextEditorDecorationType({
@@ -33,6 +34,7 @@ export class DueDate {
 		color: "grey",
 		fontWeight: "bold",
 	});
+
 	constructor(
 		public readonly uri: Uri,
 		dateMatch: string,
@@ -46,7 +48,14 @@ export class DueDate {
 
 		let dateValues = date.split(".");
 
+		this.date = new Date(
+			Number.parseInt(dateValues[2]),
+			Number.parseInt(dateValues[1]) - 1,
+			Number.parseInt(dateValues[0])
+		);
+
 		if (time) {
+			this.hasTime = true;
 			let timeValues = time.split(":");
 
 			this.date = new Date(
@@ -54,24 +63,40 @@ export class DueDate {
 				Number.parseInt(dateValues[1]) - 1,
 				Number.parseInt(dateValues[0]),
 				Number.parseInt(timeValues[0]),
-				Number.parseInt(timeValues[1])
+				Number.parseInt(timeValues[1]),
+				0,
+				0
 			);
 		} else {
 			this.date = new Date(
 				Number.parseInt(dateValues[2]),
 				Number.parseInt(dateValues[1]) - 1,
-				Number.parseInt(dateValues[0])
+				Number.parseInt(dateValues[0]),
+				0,
+				0,
+				0,
+				0
 			);
 		}
 	}
 
 	dueAt(): DueStatus {
-		// TODO discard hour if not specified - this might need two kinds of Dates?
-		let difference = this.date.valueOf() - Date.now().valueOf();
-		console.debug("this: ", this);
-		console.debug("date: ", this.date.valueOf());
-		console.debug("now: ", Date.now().valueOf());
-		console.debug("Difference: ", difference);
+		let difference;
+		if (this.hasTime) {
+			// since i have specified a time, I can simply calculate the difference like this
+			let today = new Date();
+			today.setSeconds(0);
+			today.setMilliseconds(0);
+			difference = this.date.valueOf() - today.valueOf();
+		} else {
+			let today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+			today.setMilliseconds(0);
+
+			difference = this.date.valueOf() - today.valueOf();
+		}
 
 		if (difference < 0) {
 			return DueStatus.expired;
