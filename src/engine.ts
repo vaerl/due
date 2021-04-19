@@ -12,7 +12,10 @@ export class Engine {
 
 	scanWorkspace() {
 		console.debug("Scanning the workspace for matches.");
+
+		// discard all dueDates for a clean scan
 		this.dueDates = [];
+
 		workspace.findFiles("*").then((files) => {
 			console.debug("Found files in workspace: ", files);
 			files.forEach(async (file) => {
@@ -28,32 +31,33 @@ export class Engine {
 		if (file.scheme === "file") {
 			let text = await this.getFileText(file);
 
-			// discard all dates in the current file
+			// remove possible duplicates by discarding for the current file
 			this.discardDates(file);
 
 			// match all instances in the extracted text
 			const textArray = text.split("\n");
-			console.debug("text-array: ", textArray);
 			for (let line = 0; line < textArray.length; line++) {
 				let match = textArray[line].match(this.exp);
 
 				if (match !== null && match.index !== undefined) {
-					console.debug("Matched line: ", match.toString());
+					console.info("Matched line: ", match.toString());
 					let range = new Range(
 						new Position(line, match.index),
 						new Position(line, match.index + match[0].length)
 					);
 
 					// TODO get todo/text before @
+
 					let date = new DueDate(file, match.toString(), range);
 					this.dueDates.push(date);
 				}
 			}
 
-			console.debug("Done scanning with: ", this.dueDates);
+			console.info("Done scanning with: ", this.dueDates);
 			this.decorate();
+			// TODO show dueDates in sidebar with the specified task (if present)
 		} else {
-			console.debug("URI is not a file, ignoring.");
+			console.info("URI is not a file, ignoring.");
 		}
 	}
 
@@ -91,12 +95,23 @@ export class Engine {
 		}
 	}
 
+	/**
+	 *
+	 * @returns first visible TextEditor that shows dueDates.
+	 */
 	getOpenEditor(): TextEditor {
 		return window.visibleTextEditors.filter((editor) =>
+			// TODO think about not filtering - if there are no dueDates, decorate() simply won't do anything
+			// TODO if moving to above implementation rename to getFocusedEditor
 			this.dueDates.map((d) => d.uri.path).includes(editor.document.uri.path)
 		)[0];
 	}
 
+	/**
+	 *
+	 * @param file the file to get the TextEditor for
+	 * @returns a TextEditor which shows the given file, may be undefined
+	 */
 	getOpenEditorFor(file: Uri): TextEditor {
 		return window.visibleTextEditors.filter(
 			(editor) => file.path === editor.document.uri.path
@@ -105,16 +120,23 @@ export class Engine {
 
 	decorate() {
 		const editor = this.getOpenEditor();
-		console.log("Decorating editor:", editor);
+		console.debug("Decorating editor:", editor);
+
+		// this step is necessary to switch between decorations
 		DueDate.removeDecorationFor(editor);
 
 		this.dueDates.forEach((date) => {
+			// only decorate if editor shows this dueDate
 			if (date.uri.path === editor.document.uri.path) {
 				editor.setDecorations(date.getDecoration(), [date.range]);
 			}
 		});
 	}
 
+	/**
+	 * Discards all dueDates that are part of the given file.
+	 * @param file The file to discard dueDates for.
+	 */
 	discardDates(file: Uri) {
 		this.dueDates = this.dueDates.filter((date) => date.uri.path !== file.path);
 	}
