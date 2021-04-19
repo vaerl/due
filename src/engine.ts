@@ -72,8 +72,6 @@ export class Engine {
 			}
 		});
 
-		console.debug("Text after getText(): ", text);
-
 		// back this up with this
 		if (text === "") {
 			console.debug("Text was empty after getText(), trying fs.readFile().");

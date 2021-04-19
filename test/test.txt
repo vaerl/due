@@ -1,4 +1,4 @@
-@19.04.2021-19:00
+@19.04.2021
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor a sapien sit amet lacinia. 
 Pellentesque vitae ultricies sapien, sollicitudin porttitor quam. Aenean semper lacus ut nisl auctor, et dignissim neque malesuada. 
 
