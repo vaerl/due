@@ -1,9 +1,10 @@
 import { Position, Range, TextEditor, Uri, window, workspace } from "vscode";
 import * as fs from "fs";
-import { DueDate } from "./dueDate";
+import { DecorationWrapper, DueDate } from "./dueDate";
 
 export class Engine {
 	public dueDates: DueDate[] = new Array();
+	public decWrapper: DecorationWrapper = new DecorationWrapper();
 
 	// match 11.11.1111 and 11.11.1111-11:11
 	public exp = "@\\d\\d\\.\\d\\d\\.\\d\\d\\d\\d(-\\d\\d:\\d\\d)?";
@@ -128,14 +129,9 @@ export class Engine {
 		console.debug("Decorating editor:", editor);
 
 		// this step is necessary to switch between decorations
-		DueDate.removeDecorationFor(editor);
-
-		this.dueDates.forEach((date) => {
-			// only decorate if editor shows this dueDate
-			if (date.uri.path === editor.document.uri.path) {
-				editor.setDecorations(date.getDecoration(), [date.range]);
-			}
-		});
+		DecorationWrapper.removeDecorationFor(editor);
+		this.decWrapper.update(this.dueDates);
+		this.decWrapper.decorate(editor);
 	}
 
 	/**
