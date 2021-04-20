@@ -5,6 +5,8 @@ export class DueDate {
 	public hasTime: boolean = false;
 	private day = 86400000;
 
+	public text?: Text;
+
 	private static expiredDecoration = window.createTextEditorDecorationType({
 		color: "red",
 		fontWeight: "bold",
@@ -38,7 +40,8 @@ export class DueDate {
 	constructor(
 		public readonly uri: Uri,
 		dateMatch: string,
-		public readonly range: Range
+		public readonly range: Range,
+		public textMatch?: string
 	) {
 		// remove @
 		dateMatch = dateMatch.substring(1);
@@ -77,6 +80,10 @@ export class DueDate {
 				0,
 				0
 			);
+		}
+
+		if (textMatch) {
+			this.text = new Text(textMatch);
 		}
 	}
 
@@ -143,4 +150,32 @@ export enum DueStatus {
 	tomorrow,
 	thisWeek,
 	later,
+}
+
+export class Text {
+	public value: string;
+	// optional, as this might not be a task
+	public completed?: boolean;
+
+	constructor(textMatch: String) {
+		let parts = textMatch.split("]");
+
+		// splitting at a non-existing character yields undefined - check if thats happening
+		if (parts[1]) {
+			// there is a task here
+			this.value = parts[1].trim();
+
+			// basically results to '- [x' or '- ['
+			let markdownTaskRest = parts[0].trim();
+			if (markdownTaskRest[markdownTaskRest.length - 1] === "x") {
+				this.completed = true;
+			} else {
+				this.completed = false;
+			}
+		} else {
+			// no task here!
+			this.value = parts[0].trim();
+		}
+		console.debug("Text: ", this);
+	}
 }

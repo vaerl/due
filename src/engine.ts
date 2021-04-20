@@ -40,7 +40,7 @@ export class Engine {
 				let match = textArray[line].match(this.exp);
 
 				if (match !== null && match.index !== undefined) {
-					console.info("Matched line: ", match.toString());
+					console.info("Matched line: ", textArray[line]);
 					let range = new Range(
 						new Position(line, match.index),
 						new Position(line, match.index + match[0].length)
@@ -48,7 +48,12 @@ export class Engine {
 
 					// TODO get todo/text before @
 
-					let date = new DueDate(file, match.toString(), range);
+					let date = new DueDate(
+						file,
+						match.toString(),
+						range,
+						textArray[line].split("@")[0]
+					);
 					this.dueDates.push(date);
 				}
 			}
