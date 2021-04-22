@@ -1,6 +1,7 @@
 import { Position, Range, TextEditor, Uri, window, workspace } from "vscode";
 import * as fs from "fs";
-import { DecorationWrapper, DueDate } from "./dueDate";
+import { DueDate } from "./dueDate";
+import { DecorationWrapper } from "./decorationWrapper";
 
 export class Engine {
 	public dueDates: DueDate[] = new Array();
@@ -47,10 +48,9 @@ export class Engine {
 						new Position(line, match.index + match[0].length)
 					);
 
-					// TODO get todo/text before @
-
 					let date = new DueDate(
 						file,
+						line,
 						match.toString(),
 						range,
 						textArray[line].split("@")[0]
@@ -128,10 +128,7 @@ export class Engine {
 		const editor = this.getOpenEditor();
 		console.debug("Decorating editor:", editor);
 
-		// this step is necessary to switch between decorations
-		DecorationWrapper.removeDecorationFor(editor);
-		this.decWrapper.update(this.dueDates);
-		this.decWrapper.decorate(editor);
+		this.decWrapper.updateDecorations(this.dueDates, editor);
 	}
 
 	/**
