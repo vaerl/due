@@ -12,8 +12,6 @@ export class DueConfig {
 			| DueDateConfig[]
 			| undefined = workspace.getConfiguration("due").get("categories");
 
-		console.debug("Config: ", possibleCategories);
-
 		if (possibleCategories) {
 			return possibleCategories;
 		} else {

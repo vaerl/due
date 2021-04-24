@@ -14,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 	let engine = new Engine(dueDateProviders);
 
+	// Commands
 	let scanWorkspace = vscode.commands.registerCommand(
 		"due.scanWorkspace",
 		() => {
@@ -22,15 +23,22 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 	context.subscriptions.push(scanWorkspace);
 
-	let scanFile = vscode.commands.registerCommand("due.scanFile", () => {
-		engine.scanFile(engine.getOpenEditor().document.uri);
-	});
+	let scanFile = vscode.commands.registerCommand("due.scanFile", () =>
+		engine.tryScanFile()
+	);
 	context.subscriptions.push(scanFile);
 
+	// Hooks
+
 	// hook into onWillSave to update the document after it has been edited
-	vscode.workspace.onWillSaveTextDocument((_event) => {
-		engine.scanFile(engine.getOpenEditor().document.uri);
-	});
+	vscode.workspace.onWillSaveTextDocument((_event) => engine.tryScanFile());
+
+	vscode.workspace.onDidChangeWorkspaceFolders((_event) =>
+		engine.scanWorkspace()
+	);
+
+	vscode.workspace.onDidOpenTextDocument((_event) => engine.tryScanFile());
+	vscode.window.onDidChangeActiveTextEditor((_event) => engine.tryScanFile());
 
 	// TreeView-stuff
 	let counter = 1;

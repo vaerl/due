@@ -29,6 +29,13 @@ export class Engine {
 		});
 	}
 
+	async tryScanFile() {
+		let editor = window.activeTextEditor;
+		if (editor) {
+			this.scanFile(editor.document.uri);
+		}
+	}
+
 	async scanFile(file: Uri) {
 		// TODO there is some error here when calling it separately for the first time, probably because scanWorkspace sets everything up
 		if (file.scheme === "file") {
@@ -106,18 +113,6 @@ export class Engine {
 
 	/**
 	 *
-	 * @returns first visible TextEditor that shows dueDates.
-	 */
-	getOpenEditor(): TextEditor {
-		return window.visibleTextEditors.filter((editor) =>
-			// TODO think about not filtering - if there are no dueDates, decorate() simply won't do anything
-			// TODO if moving to above implementation rename to getFocusedEditor
-			this.dueDates.map((d) => d.uri.path).includes(editor.document.uri.path)
-		)[0];
-	}
-
-	/**
-	 *
 	 * @param file the file to get the TextEditor for
 	 * @returns a TextEditor which shows the given file, may be undefined
 	 */
@@ -128,7 +123,7 @@ export class Engine {
 	}
 
 	decorate() {
-		const editor: TextEditor | undefined = this.getOpenEditor();
+		const editor: TextEditor | undefined = window.activeTextEditor;
 
 		if (editor) {
 			console.debug("Decorating editor:", editor);
