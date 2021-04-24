@@ -64,8 +64,9 @@ export class DueDate extends TreeItem {
 		}
 	}
 
-	dueAt(): DueStatus {
-		let difference;
+	dueAt(): string {
+		let difference: number;
+
 		if (this.hasTime) {
 			// since i have specified a time, I can simply calculate the difference like this
 			let today = new Date();
@@ -82,17 +83,17 @@ export class DueDate extends TreeItem {
 			difference = this.date.valueOf() - today.valueOf();
 		}
 
-		if (difference < 0) {
-			return DueStatus.expired;
-		} else if (difference < this.day) {
-			return DueStatus.today;
-		} else if (difference < this.day * 2) {
-			return DueStatus.tomorrow;
-		} else if (difference < this.day * 7) {
-			return DueStatus.thisWeek;
-		} else {
-			return DueStatus.later;
+		let categories = DueConfig.getCategories();
+		for (let index = 0; index < categories.length; index++) {
+			const conf = categories[index];
+			if (difference < conf.youngerThan) {
+				return conf.title;
+			}
 		}
+
+		// return error if the above does not match
+		return DueConfig.getCategories()[DueConfig.getCategories().length - 1]
+			.title;
 	}
 }
 
