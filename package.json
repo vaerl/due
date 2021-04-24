@@ -1,7 +1,7 @@
 {
 	"name": "due",
 	"displayName": "due",
-	"description": "schedule tasks and view them at a single glance",
+	"description": "Tag tasks with dates.",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.55.0"
