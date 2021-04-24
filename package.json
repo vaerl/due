@@ -62,6 +62,37 @@
 				}
 			]
 		},
+		"configuration": {
+			"title": "due",
+			"properties": {
+				"due.categories": {
+					"type": "array",
+					"default": [
+						{
+							"title": "expired",
+							"color": "red",
+							"youngerThan": 0
+						},
+						{
+							"title": "today",
+							"color": "orange",
+							"youngerThan": 86400000
+						},
+						{
+							"title": "tomorrow",
+							"color": "blue",
+							"youngerThan": 172800000
+						},
+						{
+							"title": "error",
+							"color": "magenta",
+							"youngerThan": -1
+						}
+					],
+					"description": "Categories for dueDates. Expects an object of (title: string, color: string and youngerThan: number), with youngerThan needing a value in milliseconds."
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "pnpm run compile",
