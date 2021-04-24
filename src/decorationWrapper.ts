@@ -16,14 +16,9 @@ export class DecorationDate {
 
 export class DecorationWrapper {
 	// initialize this as static to have a single instance of each decoration
-	public static decorationDates = [
-		new DecorationDate(DueStatus.expired, "red"),
-		new DecorationDate(DueStatus.today, "orange"),
-		new DecorationDate(DueStatus.tomorrow, "brown"),
-		new DecorationDate(DueStatus.thisWeek, "purple"),
-		new DecorationDate(DueStatus.later, "blue"),
-		new DecorationDate(DueStatus.done, "green"),
-	];
+	public static decorationDates = DueConfig.getCategories().map(
+		(conf) => new DecorationDate(conf.title, conf.color)
+	);
 
 	constructor() {}
 
