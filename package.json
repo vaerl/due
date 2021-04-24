@@ -23,7 +23,45 @@
 				"command": "due.scanFile",
 				"title": "Due: Scan current file"
 			}
-		]
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "due-dates",
+					"title": "Due",
+					"icon": "clipboard-check.svg"
+				}
+			]
+		},
+		"views": {
+			"due-dates": [
+				{
+					"id": "due-1",
+					"name": "Expired"
+				},
+				{
+					"id": "due-2",
+					"name": "Today",
+					"visibility": "hidden"
+				},
+				{
+					"id": "due-3",
+					"name": "Tomorrow"
+				},
+				{
+					"id": "due-4",
+					"name": "This Week"
+				},
+				{
+					"id": "due-5",
+					"name": "Later"
+				},
+				{
+					"id": "due-6",
+					"name": "Error"
+				}
+			]
+		},
 	},
 	"scripts": {
 		"vscode:prepublish": "pnpm run compile",
