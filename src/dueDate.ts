@@ -1,6 +1,7 @@
-import { Range, Uri } from "vscode";
+import { Range, TreeItem, TreeItemCollapsibleState, Uri } from "vscode";
+import { DueConfig } from "./config";
 
-export class DueDate {
+export class DueDate extends TreeItem {
 	public date: Date;
 	public hasTime: boolean = false;
 	private day = 86400000;
@@ -14,6 +15,8 @@ export class DueDate {
 		public readonly range: Range,
 		public textMatch?: string
 	) {
+		// TODO use better text here
+		super(dateMatch.substring(1), TreeItemCollapsibleState.None);
 		// remove @
 		dateMatch = dateMatch.substring(1);
 
@@ -55,6 +58,9 @@ export class DueDate {
 
 		if (textMatch) {
 			this.text = new Text(textMatch);
+
+			// TODO use better text here?
+			super.label = this.text.value + " - " + dateMatch;
 		}
 	}
 
