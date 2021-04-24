@@ -128,10 +128,14 @@ export class Engine {
 	}
 
 	decorate() {
-		const editor = this.getOpenEditor();
-		console.debug("Decorating editor:", editor);
+		const editor: TextEditor | undefined = this.getOpenEditor();
 
-		this.decWrapper.updateDecorations(this.dueDates, editor);
+		if (editor) {
+			console.debug("Decorating editor:", editor);
+			this.decWrapper.updateDecorations(this.dueDates, editor);
+		} else {
+			console.warn("No editor found, not decorating.");
+		}
 	}
 
 	/**
