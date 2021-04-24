@@ -1,11 +1,12 @@
 import { TextEditor, TextEditorDecorationType, window } from "vscode";
+import { DueConfig } from "./config";
 import { DueDate, DueStatus } from "./dueDate";
 
 export class DecorationDate {
 	public decoration: TextEditorDecorationType;
 	public dueDates: DueDate[] = [];
 
-	constructor(public status: DueStatus, color: string) {
+	constructor(public status: string, color: string) {
 		this.decoration = window.createTextEditorDecorationType({
 			color: color,
 			fontWeight: "bold",
