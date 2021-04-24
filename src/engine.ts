@@ -2,6 +2,7 @@ import { Position, Range, TextEditor, Uri, window, workspace } from "vscode";
 import * as fs from "fs";
 import { DueDate } from "./dueDate";
 import { DecorationWrapper } from "./decorationWrapper";
+import { DueDateProvider } from "./dueDateProvider";
 
 export class Engine {
 	public dueDates: DueDate[] = new Array();
@@ -10,7 +11,7 @@ export class Engine {
 	// match 11.11.1111 and 11.11.1111-11:11
 	public exp = "@\\d\\d\\.\\d\\d\\.\\d\\d\\d\\d(-\\d\\d:\\d\\d)?";
 
-	constructor() {}
+	constructor(public dueDateProviders: DueDateProvider[]) {}
 
 	scanWorkspace() {
 		console.debug("Scanning the workspace for matches.");
@@ -61,7 +62,9 @@ export class Engine {
 
 			console.info("Done scanning with: ", this.dueDates);
 			this.decorate();
-			// TODO show dueDates in sidebar with the specified task (if present)
+			this.dueDateProviders.forEach((provider) => {
+				provider.update(this.dueDates);
+			});
 		} else {
 			console.info("URI is not a file, ignoring.");
 		}
