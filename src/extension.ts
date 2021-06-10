@@ -42,8 +42,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// TreeView-stuff
 	let counter = 1;
+	console.debug("Providers: ", dueDateProviders);
 	dueDateProviders.forEach((provider) => {
 		let id = "due-" + counter++;
+		console.log("Adding at " + counter, provider);
 		let treeView = vscode.window.createTreeView(id, {
 			treeDataProvider: provider,
 		});

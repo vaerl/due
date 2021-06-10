@@ -20,7 +20,9 @@ export class DueDateProvider implements TreeDataProvider<DueDate> {
 	getChildren(_element?: DueDate): Thenable<DueDate[]> {
 		// I can ignore this as there will never be children
 		return Promise.resolve(
-			this.dueDates.filter((date) => date.dueAt() === this.status)
+			this.dueDates.filter(
+				(date) => date.dueAt() === this.status && !date.text?.completed
+			)
 		);
 	}
 

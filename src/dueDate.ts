@@ -15,8 +15,7 @@ export class DueDate extends TreeItem {
 		public readonly range: Range,
 		public textMatch?: string
 	) {
-		// TODO use better text here
-		super(dateMatch.substring(1), TreeItemCollapsibleState.None);
+		super(getDateString(dateMatch), TreeItemCollapsibleState.None);
 		// remove @
 		dateMatch = dateMatch.substring(1);
 
@@ -127,9 +126,18 @@ export class Text {
 				this.completed = false;
 			}
 		} else {
-			// no task here!
-			this.value = parts[0].trim();
+			// no task here, check for headline
+			this.value = parts[0]
+				.split("")
+				.filter((part) => part !== "#")
+				.join("")
+				.trim();
 		}
 		console.debug("Text: ", this);
 	}
+}
+function getDateString(dateMatch: string): string {
+	dateMatch = dateMatch.substring(1);
+	dateMatch = dateMatch.substring(0, dateMatch.length);
+	return dateMatch;
 }

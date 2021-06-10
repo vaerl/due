@@ -59,7 +59,7 @@ export class Engine {
 					let date = new DueDate(
 						file,
 						line,
-						match.toString(),
+						match[0],
 						range,
 						textArray[line].split("@")[0]
 					);
